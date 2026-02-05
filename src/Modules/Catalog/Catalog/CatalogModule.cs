@@ -11,6 +11,17 @@ public static class CatalogModule
         public IServiceCollection AddCatalogModule(
         IConfiguration configuration)
         {
+            // Api endpoints services
+
+            // Application services
+
+            // Data - Infrastructure services
+            var connectionString = configuration.GetConnectionString("Database");
+            services.AddDbContext<CatalogDbContext>(options =>
+            {
+                options.UseNpgsql(connectionString);
+                // add interceptors, logging, etc. as needed
+            });
             return services;
         }
     }
