@@ -22,6 +22,7 @@ public static class CatalogModule
                 options.UseNpgsql(connectionString);
                 // add interceptors, logging, etc. as needed
             });
+            services.AddScoped<IDataSeeder, CatalogDataSeeder>();
             return services;
         }
     }
@@ -30,6 +31,7 @@ public static class CatalogModule
     {
         public IApplicationBuilder UseCatalogModule()
         {
+            app.UseMigration<CatalogDbContext>();
             return app;
         }
     }
