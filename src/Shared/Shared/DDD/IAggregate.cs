@@ -1,6 +1,6 @@
 ﻿namespace Shared.DDD;
 
-public interface IAggregate<TId> : IEntity<TId>;   
+public interface IAggregate<TId> : IAggregate, IEntity<TId>;   
 
 public interface IAggregate : IEntity
 {

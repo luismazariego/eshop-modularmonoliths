@@ -1,6 +1,6 @@
 ﻿namespace Catalog.Products.Models;
 
-public sealed class Product : Aggregate<Guid>
+public class Product : Aggregate<Guid>
 {
     public string Name { get; private set; } = default!;
     public List<string> Category { get; private set; } = [];
@@ -48,7 +48,6 @@ public sealed class Product : Aggregate<Guid>
         Category = category;
         Description = description;
         ImageFile = imageFile;
-        Price = price;
 
         //If price has changed, raise domain event ProductPriceChanged
         if (Price != price)

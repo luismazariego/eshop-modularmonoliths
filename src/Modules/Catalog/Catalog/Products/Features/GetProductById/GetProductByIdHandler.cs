@@ -1,13 +1,13 @@
 ﻿namespace Catalog.Products.Features.GetProductById;
 
-public record GetProductByIdRequest(Guid Id) : IQuery<GetProductByIdResponse>;
+public record GetProductByIdRequest(Guid Id) : IQuery<GetProductByIdResult>;
 
-public record GetProductByIdResponse(ProductDto Product);
+public record GetProductByIdResult(ProductDto Product);
 
 internal class GetProductByIdHandler(CatalogDbContext dbContext)
-    : IQueryHandler<GetProductByIdRequest, GetProductByIdResponse>
+    : IQueryHandler<GetProductByIdRequest, GetProductByIdResult>
 {
-    public async Task<GetProductByIdResponse> Handle(
+    public async Task<GetProductByIdResult> Handle(
         GetProductByIdRequest request,
         CancellationToken cancellationToken)
     {
@@ -25,6 +25,6 @@ internal class GetProductByIdHandler(CatalogDbContext dbContext)
 
         return product is null ?
             throw new Exception($"Product with id {request.Id} not found.") : 
-            new GetProductByIdResponse(product);
+            new GetProductByIdResult(product);
     }
 }
