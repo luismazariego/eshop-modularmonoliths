@@ -24,7 +24,7 @@ internal class GetProductByIdHandler(CatalogDbContext dbContext)
             .FirstOrDefaultAsync(cancellationToken);
 
         return product is null ?
-            throw new Exception($"Product with id {request.Id} not found.") : 
+            throw new ProductNotFoundException(request.Id) : 
             new GetProductByIdResult(product);
     }
 }

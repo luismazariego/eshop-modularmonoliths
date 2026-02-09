@@ -5,6 +5,19 @@ public record UpdateProductCommand(ProductDto Product)
 
 public record UpdateProductResult(bool IsSuccess);
 
+public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
+{
+    public UpdateProductCommandValidator()
+    {
+        RuleFor(x => x.Product.Id)
+            .NotEmpty();
+        RuleFor(x => x.Product.Name)
+            .NotEmpty();
+        RuleFor(x => x.Product.Price)
+            .GreaterThan(0);
+    }
+}
+
 internal sealed class UpdateProductHandler(CatalogDbContext dbContext)
     : ICommandHandler<UpdateProductCommand, UpdateProductResult>
 {
@@ -15,7 +28,7 @@ internal sealed class UpdateProductHandler(CatalogDbContext dbContext)
         var product = await dbContext
             .Products
             .FindAsync([command.Product.Id], cancellationToken) ?? 
-            throw new Exception($"Product with id {command.Product.Id} not found.");
+            throw new ProductNotFoundException(command.Product.Id);
 
         UpdateProductWithNewValues(product, command.Product);
 
