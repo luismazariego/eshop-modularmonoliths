@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Behaviors;
 using Shared.Data.Interceptors;
 
 namespace Catalog;
@@ -19,7 +19,9 @@ public static class CatalogModule
             services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssembly(typeof(CatalogModule).Assembly);
+                cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
+            services.AddValidatorsFromAssembly(typeof(CatalogModule).Assembly); 
 
             // Data - Infrastructure services
             var connectionString = configuration.GetConnectionString("Database");
