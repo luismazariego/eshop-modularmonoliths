@@ -10,3 +10,14 @@ services:
       - "5432:5432"
     volumes:
       - postgres_eshopdb:/var/lib/postgresql
+
+  seq:
+    container_name: seq
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - SEQ_FIRSTRUN_ADMINPASSWORD=seqadmin
+    ports:
+      - "5341:5341"
+      - "9091:80" 
+    

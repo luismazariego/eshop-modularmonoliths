@@ -22,25 +22,20 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
 }
 
 internal sealed class CreateProductHandler(
-    CatalogDbContext dbContext,
-    ILogger<CreateProductHandler> logger) 
+    CatalogDbContext dbContext) 
     : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
     public async Task<CreateProductResult> Handle(
         CreateProductCommand command, 
         CancellationToken cancellationToken)
     {
-        logger.LogInformation(
-            "Creating new product with name: {ProductName}", 
-            command.Product.Name);
-
         var product = CreateNewProduct(command.Product);
         dbContext.Products.Add(product);
         await dbContext.SaveChangesAsync(cancellationToken);
         return new CreateProductResult(product.Id);
     }
 
-    private Product CreateNewProduct(ProductDto productDto)
+    private static Product CreateNewProduct(ProductDto productDto)
     {
         var product = Product.Create(
             Guid.NewGuid(),
