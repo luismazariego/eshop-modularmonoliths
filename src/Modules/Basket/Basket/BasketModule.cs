@@ -26,6 +26,7 @@ public static class BasketModule
                 options.UseNpgsql(connectionString);
             });
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.Decorate<IBasketRepository, CacheBasketRepository>();
             return services;
         }
     }

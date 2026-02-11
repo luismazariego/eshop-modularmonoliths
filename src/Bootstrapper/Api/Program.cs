@@ -12,6 +12,12 @@ builder.Services
     .AddCarterWithAssemblies(assemblies)
     .AddMediatRWithAssemblies(assemblies);
 
+builder.Services.AddStackExchangeRedisCache(opt =>
+{
+   opt.Configuration = builder.Configuration.GetConnectionString("Redis");
+    opt.InstanceName = "RedisCache";
+});
+
 // Application services
 builder.Services
     .AddCatalogModule(builder.Configuration)
