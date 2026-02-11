@@ -1,4 +1,6 @@
-﻿namespace Basket.Basket.Features.CreateBasket;
+﻿using Basket.Data.Repositories;
+
+namespace Basket.Basket.Features.CreateBasket;
 
 public record CreateBasketCommand(ShoppingCartDto ShoppingCart) 
     : ICommand<CreateBasketResult>;
@@ -14,7 +16,7 @@ public class CreateBasketValidator : AbstractValidator<CreateBasketCommand>
 }
 
 
-public class CreateBasketHandler(BasketDbContext dbContext) 
+public class CreateBasketHandler(IBasketRepository basketRepository) 
     : ICommandHandler<CreateBasketCommand, CreateBasketResult>
 {
     public async Task<CreateBasketResult> Handle(
@@ -22,8 +24,9 @@ public class CreateBasketHandler(BasketDbContext dbContext)
         CancellationToken cancellationToken)
     {
         var shoppingCart = CreateNewBasket(command.ShoppingCart);
-        dbContext.ShoppingCarts.Add(shoppingCart);
-        await dbContext.SaveChangesAsync(cancellationToken);
+
+        await basketRepository
+            .CreateBasketAsync(shoppingCart, cancellationToken);
 
         return new CreateBasketResult(shoppingCart.Id);
     }

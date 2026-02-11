@@ -15,15 +15,6 @@ public static class CatalogModule
         {
             // Api endpoints services
 
-            // Application services
-            services.AddMediatR(cfg =>
-            {
-                cfg.RegisterServicesFromAssembly(typeof(CatalogModule).Assembly);
-                cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
-                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
-            });
-            services.AddValidatorsFromAssembly(typeof(CatalogModule).Assembly); 
-
             // Data - Infrastructure services
             var connectionString = configuration.GetConnectionString("Database");
             services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();

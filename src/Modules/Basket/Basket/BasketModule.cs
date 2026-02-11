@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using Basket.Data.Repositories;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Data;
@@ -12,6 +13,8 @@ public static class BasketModule
     {
         public IServiceCollection AddBasketModule(IConfiguration configuration)
         {
+            // Application services
+
             // Data - Infrastructure services
             var connectionString = configuration.GetConnectionString("Database");
             services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
@@ -22,6 +25,7 @@ public static class BasketModule
                 options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
                 options.UseNpgsql(connectionString);
             });
+            services.AddScoped<IBasketRepository, BasketRepository>();
             return services;
         }
     }

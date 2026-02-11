@@ -4,10 +4,15 @@ builder.Host.UseSerilog((context, config) =>
     config.ReadFrom.Configuration(context.Configuration));
 
 // Add services to the container.
-
+Assembly[] assemblies = [
+    typeof(CatalogModule).Assembly, 
+    typeof(BasketModule).Assembly
+];
 builder.Services
-    .AddCarterWithAssemblies([typeof(CatalogModule).Assembly]);
+    .AddCarterWithAssemblies(assemblies)
+    .AddMediatRWithAssemblies(assemblies);
 
+// Application services
 builder.Services
     .AddCatalogModule(builder.Configuration)
     .AddBasketModule(builder.Configuration)
