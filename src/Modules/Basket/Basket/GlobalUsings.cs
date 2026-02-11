@@ -1,11 +1,13 @@
 ﻿global using Basket.Basket.Models;
 global using Mapster;
+global using Carter;
 global using MediatR;
 global using Microsoft.AspNetCore.Builder;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Routing;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.Extensions.Logging;
 global using Shared.DDD;
 global using Basket.Data;
