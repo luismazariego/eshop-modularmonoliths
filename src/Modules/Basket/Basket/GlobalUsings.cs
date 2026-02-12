@@ -13,6 +13,6 @@ global using Shared.DDD;
 global using Basket.Data;
 global using Basket.Basket.Dtos;
 global using FluentValidation;
-global using Shared.CQRS;
+global using Shared.Contracts.CQRS;
 global using Shared.Exceptions;
 global using Basket.Basket.Exceptions;
