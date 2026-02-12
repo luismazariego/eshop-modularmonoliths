@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
+﻿using Basket.Data.JsonConverters;
+using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Basket.Data.Repositories;
 
@@ -7,6 +9,17 @@ public class CacheBasketRepository(
     IBasketRepository repository,
     IDistributedCache cache) : IBasketRepository
 {
+    private readonly JsonSerializerOptions _options = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        Converters =
+        {
+            new ShoppingCartConverter(),
+            new ShoppingCartItemConverter()
+        }
+    };
+
     public async Task<ShoppingCart> CreateBasketAsync(
         ShoppingCart basket,
         CancellationToken cancellationToken = default)
@@ -15,7 +28,7 @@ public class CacheBasketRepository(
 
         await cache.SetStringAsync(
             basket.Username,
-            JsonSerializer.Serialize(basket),
+            JsonSerializer.Serialize(basket, _options),
             cancellationToken);
 
         return basket;
@@ -45,14 +58,15 @@ public class CacheBasketRepository(
 
         if (!string.IsNullOrWhiteSpace(cachedBasket))
         {
-            return JsonSerializer.Deserialize<ShoppingCart>(cachedBasket)!;           
+            return JsonSerializer
+                .Deserialize<ShoppingCart>(cachedBasket, _options)!;           
         }
         var basket = await repository
             .GetBasketAsync(username, asNoTracking, cancellationToken); 
 
         await cache.SetStringAsync(
             username,
-            JsonSerializer.Serialize(basket),
+            JsonSerializer.Serialize(basket, _options),
             cancellationToken);
 
         return basket;

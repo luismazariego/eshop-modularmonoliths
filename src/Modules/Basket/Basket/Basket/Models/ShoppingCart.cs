@@ -29,7 +29,7 @@ public class ShoppingCart : Aggregate<Guid>
         var existingItem = _items
             .FirstOrDefault(i => i.ProductId == productId && 
                             i.Color == color);
-        
+
         if (existingItem is not null)
         {
             existingItem.Quantity += quantity;
@@ -37,6 +37,7 @@ public class ShoppingCart : Aggregate<Guid>
         else
         {
             var newItem = new ShoppingCartItem(
+                Guid.NewGuid(),
                 Id,
                 productId,
                 quantity,
@@ -46,6 +47,26 @@ public class ShoppingCart : Aggregate<Guid>
 
             _items.Add(newItem);
         }
+    }
+
+    internal void ReconstructItem(
+        Guid id,
+        Guid productId,
+        int quantity,
+        string color,
+        decimal price,
+        string productName)
+    {
+        var newItem = new ShoppingCartItem(
+            id,
+            Id,
+            productId,
+            quantity,
+            color,
+            price,
+            productName);
+
+        _items.Add(newItem);
     }
 
     public void RemoveItem(Guid productId)
