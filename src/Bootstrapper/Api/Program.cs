@@ -10,7 +10,8 @@ Assembly[] assemblies = [
 ];
 builder.Services
     .AddCarterWithAssemblies(assemblies)
-    .AddMediatRWithAssemblies(assemblies);
+    .AddMediatRWithAssemblies(assemblies)
+    .AddMassTransitWithAssemblies(assemblies);
 
 builder.Services.AddStackExchangeRedisCache(opt =>
 {
