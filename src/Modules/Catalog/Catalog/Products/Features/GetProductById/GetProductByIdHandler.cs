@@ -1,14 +1,10 @@
 ﻿namespace Catalog.Products.Features.GetProductById;
 
-public record GetProductByIdRequest(Guid Id) : IQuery<GetProductByIdResult>;
-
-public record GetProductByIdResult(ProductDto Product);
-
 internal class GetProductByIdHandler(CatalogDbContext dbContext)
-    : IQueryHandler<GetProductByIdRequest, GetProductByIdResult>
+    : IQueryHandler<GetProductByIdQuery, GetProductByIdResult>
 {
     public async Task<GetProductByIdResult> Handle(
-        GetProductByIdRequest request,
+        GetProductByIdQuery request,
         CancellationToken cancellationToken)
     {
         var product = await dbContext.Products
