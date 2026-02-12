@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -9,6 +10,7 @@ public static class MassTransitExtensions
     extension(IServiceCollection services)
     {
         public IServiceCollection AddMassTransitWithAssemblies(
+            IConfiguration configuration, 
             params Assembly[] assemblies)
         {
             services.AddMassTransit(config =>
@@ -19,10 +21,21 @@ public static class MassTransitExtensions
                 config.AddSagas(assemblies);
                 config.AddActivities(assemblies);
 
-                config.UsingInMemory((context, cfg) =>
+                config.UsingRabbitMq((context, cfg) =>
                 {
+                    var host = configuration["MessageBroker:Host"]!;
+                    cfg.Host(host, h =>
+                    {
+                        h.Username(configuration["MessageBroker:Username"]!);
+                        h.Password(configuration["MessageBroker:Password"]!);
+                    });
                     cfg.ConfigureEndpoints(context);
                 });
+
+                //config.UsingInMemory((context, cfg) =>
+                //{
+                //    cfg.ConfigureEndpoints(context);
+                //});
             });
 
             return services;

@@ -11,7 +11,7 @@ Assembly[] assemblies = [
 builder.Services
     .AddCarterWithAssemblies(assemblies)
     .AddMediatRWithAssemblies(assemblies)
-    .AddMassTransitWithAssemblies(assemblies);
+    .AddMassTransitWithAssemblies(builder.Configuration, assemblies);
 
 builder.Services.AddStackExchangeRedisCache(opt =>
 {
