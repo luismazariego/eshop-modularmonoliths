@@ -13,7 +13,7 @@ public class ProductPriceChangedIntegrationEventHandler(
         ConsumeContext<ProductPriceChangedIntegrationEvent> context)
     {
         logger.LogInformation(
-            "Received new Price for ProductId: {ProductId}, New Price: {Price}",
+            "Received new Price for ProductId: {ProductId}, New Price: {Price}",    
             context.Message.ProductId, context.Message.Price);
 
         var command = new UpdateItemPriceInBasketCommand(
