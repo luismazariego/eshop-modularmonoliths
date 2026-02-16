@@ -8,7 +8,8 @@ builder.Host.UseSerilog((context, config) =>
 // Add services to the container.
 Assembly[] assemblies = [
     typeof(CatalogModule).Assembly, 
-    typeof(BasketModule).Assembly
+    typeof(BasketModule).Assembly,
+    typeof(OrderingModule).Assembly,
 ];
 builder.Services
     .AddCarterWithAssemblies(assemblies)
